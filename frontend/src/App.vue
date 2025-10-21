@@ -1,12 +1,10 @@
 <template>
   <div class="p-8 max-w-3xl mx-auto">
-    <h1 class="text-2xl font-bold mb-6 text-gray-800">🔥 熱門商品排行榜</h1>
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">熱門商品排行榜</h1>
 
     <!-- 載入資料按鈕 -->
-    <button
-      @click="loadData"
-      class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition cursor-pointer"
-    >
+    <button @click="loadData"
+      class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition cursor-pointer">
       載入資料
     </button>
 
@@ -15,11 +13,7 @@
 
     <!-- 顯示資料 -->
     <ul v-if="!loading && products.length" class="mt-6 space-y-2">
-      <li
-        v-for="item in products"
-        :key="item.id"
-        class="border p-3 rounded shadow-sm hover:shadow-md transition"
-      >
+      <li v-for="item in products" :key="item.id" class="border p-3 rounded shadow-sm hover:shadow-md transition">
         <div class="flex justify-between items-center">
           <div>
             <strong>{{ item.name }}</strong>
