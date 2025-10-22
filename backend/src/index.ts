@@ -1,18 +1,21 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import { pool } from "./db.js";
 
 dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get("/api/trending-products", (req, res) => {
-    res.json([
-        { id: 1, name: "Oversized Jacket", category: "Men", sales: 518, growth: 32, stock: "normal" },
-        { id: 2, name: "Retro Sneakers", category: "Unisex", sales: 430, growth: 18, stock: "low" },
-        { id: 3, name: "Leather Bag", category: "Women", sales: 398, growth: -5, stock: "normal" },
-    ]);
+app.get("/api/trending-products", async (req, res) => {
+    try {
+        const result = await pool.query("SELECT * FROM products ORDER BY sales DESC LIMIT 10");
+        res.json(result.rows);
+    } catch (error) {
+        console.error("Database error:", error);
+        res.status(500).json({ error: "trending-products query failed" });
+    }
 });
 
 const PORT = process.env.PORT || 3000;
