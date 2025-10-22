@@ -1,0 +1,37 @@
+# ===============================
+# Docker compose
+# ===============================
+version: "3.9"
+
+services:
+  backend:
+    build: ./backend
+    container_name: trending-backend
+    restart: always
+    env_file:
+      - ./backend/.env
+    # ports:
+    #   - "3000:3000"        # 可選：若不想暴露 API，可拿掉
+    networks:
+      - trending-net
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/trending-products"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build: ./frontend
+    container_name: trending-frontend
+    restart: always
+    ports:
+      - "80:80"            # 外部訪問入口
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - trending-net
+
+networks:
+  trending-net:
+    driver: bridge
