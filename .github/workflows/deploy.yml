@@ -1,0 +1,40 @@
+name: 🚀 Deploy to AWS EC2 (Docker Compose)
+
+on:
+  push:
+    branches:
+      - master       # 只要 push 到 master 分支就自動部署
+
+jobs:
+  deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ✅ Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🔑 Set up SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
+      - name: 🧠 Add EC2 host to known_hosts
+        run: |
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
+      - name: 🚀 Deploy to EC2 via SSH
+        run: |
+          ssh ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
+            cd ~/trending-dashboard || exit 1
+            echo "📦 Pulling latest code..."
+            git fetch --all
+            git reset --hard origin/main
+
+            echo "🐳 Rebuilding containers..."
+            sudo docker compose down
+            sudo docker compose up -d --build --no-cache
+
+            echo "🧼 Cleaning old images..."
+            sudo docker image prune -f
+          EOF
