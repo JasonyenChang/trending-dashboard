@@ -4,7 +4,7 @@ const api = axios.create({
     baseURL:
         import.meta.env.MODE === "development"
             ? "http://localhost:3000"
-            : "/api",
+            : "/",
 });
 
 export async function getTrendingProducts() {
