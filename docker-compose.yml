@@ -10,8 +10,8 @@ services:
     restart: always
     env_file:
       - ./backend/.env
-    ports:
-      - "3000:3000" # 可選：若不想暴露 API，可拿掉
+    # ports:
+    #   - "3000:3000" # 可選：若不想暴露 API，可拿掉
     networks:
       - trending-net
     healthcheck:
