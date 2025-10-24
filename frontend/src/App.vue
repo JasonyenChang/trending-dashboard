@@ -1,6 +1,6 @@
 <template>
   <div class="p-8 max-w-3xl mx-auto">
-    <h1 class="text-2xl font-bold mb-6 text-gray-800">熱門商品排行榜</h1>
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">熱門商品</h1>
 
     <!-- 載入資料按鈕 -->
     <button @click="loadData"
